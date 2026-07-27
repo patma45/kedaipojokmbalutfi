@@ -6,14 +6,14 @@
   <meta name="theme-color" content="#169fee" />
   <meta name="description" content="Pesan Bakso Tetelan, Lumpia Beef, minuman, dan catering Kedai Pojok Mba Lutfi via WhatsApp. Ongkir mulai Rp3.000-an." />
   <title>Kedai Pojok Mba Lutfi — Pesan via WhatsApp</title>
-  <link rel="icon" href="favicon.png" />
+  <link rel="icon" href="assets/favicon.png" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <header class="site-header" id="top">
     <div class="container nav-wrap">
-      <a class="brand brand-logo" href="#top" aria-label="Kedai Pojok Mba Lutfi">
-        <img src="logo-kedai-pojok.png" alt="Logo Kedai Pojok Mba Lutfi" />
+      <a class="brand brand-logo" href="#top" aria-label="Kedai Pojok Mba Lutfi — Bakso dan Mie Ayam">
+        <img src="logo-kedai-pojok.png" alt="Logo Kedai Pojok Mba Lutfi — Bakso dan Mie Ayam" />
       </a>
 
       <button class="nav-toggle" type="button" aria-label="Buka menu navigasi" aria-expanded="false">
@@ -35,30 +35,75 @@
 
   <main>
     <section class="hero">
+      <div class="hero-dots hero-dots-a" aria-hidden="true"></div>
+      <div class="hero-dots hero-dots-b" aria-hidden="true"></div>
       <div class="container hero-grid">
         <div class="hero-copy">
           <div class="status-badge">
             <span class="status-dot"></span>
             Buka 11.00 WIB - sampai habis
           </div>
+
           <p class="eyebrow">PESAN MUDAH • LANGSUNG WHATSAPP</p>
           <h1 class="hero-title-long">Jajan Enak Gak Pake Mahal, <span>Ongkir Cuma Seharga Parkir!</span></h1>
           <p class="hero-lead">
             Mau Bakso Tetelan atau Lumpia Beef? Tinggal klik WhatsApp, pesanan langsung meluncur ke depan pintu. Praktis, kenyang, kantong aman!
           </p>
+
           <div class="hero-actions">
             <a class="button button-primary" href="#menu">Lihat Menu</a>
-            <a class="button button-light" href="https://wa.me/6288212951881?text=Halo%20Mba%20Lutfi%2C%20saya%20mau%20pesan." target="_blank" rel="noopener">Chat Mba Lutfi</a>
+            <a class="button button-light" href="https://wa.me/6288212951881?text=Halo%20Mba%20Lutfi%2C%20saya%20mau%20pesan." target="_blank" rel="noopener">
+              Chat Mba Lutfi
+            </a>
+          </div>
+
+          <div class="quick-facts" aria-label="Informasi singkat">
+            <div class="fact-card">
+              <span class="fact-icon" aria-hidden="true">🛵</span>
+              <div><strong>Ongkir Mulai 3.000 an Aja!</strong><small>Hemat, cuma seharga parkir</small></div>
+            </div>
+            <div class="fact-card">
+              <span class="fact-icon" aria-hidden="true">🍱</span>
+              <div><strong>Menerima Catering Segala Acara</strong><small>Pesan praktis via WhatsApp</small></div>
+            </div>
+            <div class="fact-card">
+              <span class="fact-icon" aria-hidden="true">⏰</span>
+              <div><strong>11.00 WIB</strong><small>Buka sampai habis</small></div>
+            </div>
           </div>
         </div>
 
-        <div class="hero-visual">
+        <div class="hero-visual" aria-label="Visual aneka menu Kedai Pojok Mba Lutfi">
+          <div class="magic-door" aria-hidden="true">
+            <span class="door-knob"></span>
+          </div>
           <div class="hero-photo-card">
-            <img src="menu-header.webp" alt="Menu Kedai Pojok" fetchpriority="high" />
+            <img src="menu-header.webp" alt="Aneka menu Kedai Pojok Mba Lutfi: bakso tetelan, bakso telur, lumpia beef, dan aneka minuman" fetchpriority="high" />
             <span class="hero-tag">Lumpia Beef</span>
             <span class="hero-sticker">Favorit!</span>
           </div>
+          <div class="magic-pocket" aria-hidden="true"></div>
+          <div class="floating-note note-left">
+            <span>★</span>
+            <div><strong>Menu variatif</strong><small>Makanan & minuman</small></div>
+          </div>
+          <div class="floating-note note-right">
+            <span>✓</span>
+            <div><strong>Tinggal chat</strong><small>Pesan langsung lewat WA</small></div>
+          </div>
+          <span class="spark spark-one">✦</span>
+          <span class="spark spark-two">✦</span>
+          <span class="spark spark-three">●</span>
         </div>
+      </div>
+    </section>
+
+    <section class="ticker" aria-label="Informasi kedai">
+      <div class="ticker-track">
+        <span>ONGKIR MULAI RP3.000</span><i>★</i>
+        <span>BUKA 11.00 WIB — SAMPAI HABIS</span><i>★</i>
+        <span>PESAN LANGSUNG VIA WHATSAPP</span><i>★</i>
+        <span>CEK STOK SEBELUM PESAN</span><i>★</i>
       </div>
     </section>
 
@@ -68,102 +113,114 @@
           <div>
             <p class="eyebrow blue">MENU PILIHAN</p>
             <h2>Mau makan atau minum apa hari ini?</h2>
+            <p>Pilih menu lalu klik <strong>Tambah</strong>. Daftar pesanan akan otomatis disiapkan untuk dikirim ke WhatsApp.</p>
+          </div>
+          <div class="category-tabs" role="group" aria-label="Filter kategori menu">
+            <button class="category-tab active" type="button" data-filter="all">Semua</button>
+            <button class="category-tab" type="button" data-filter="makanan">Makanan</button>
+            <button class="category-tab" type="button" data-filter="minuman">Minuman</button>
           </div>
         </div>
 
         <div class="menu-grid">
-          <!-- Lumpia -->
-          <article class="menu-card featured">
-            <div class="menu-image">
-              <img src="menu-lumpia.webp" alt="Lumpia beef" loading="lazy" />
+          <article class="menu-card featured" data-category="makanan">
+            <div class="menu-image menu-poster">
+              <img src="menu-lumpia.webp" alt="Lumpia beef dengan isian daging" loading="lazy" />
+              <span class="menu-badge red">Paling dicari</span>
             </div>
             <div class="menu-content">
+              <span class="menu-category">Jajanan</span>
               <h3>Lumpia Beef</h3>
-              <p>Isian daging sapi gurih dengan sayuran dan saus creamy.</p>
-              <div class="menu-bottom"><strong class="price">Rp15.000</strong><button class="add-button" data-name="Lumpia Beef" data-price="15000">+ Tambah</button></div>
+              <p>Halal! Isian daging sapi gurih dengan sayuran, saus creamy, dan kulit lembut.</p>
+              <div class="menu-bottom">
+                <div class="menu-bottom"><strong class="price">Rp15.000/Porsi</strong><button class="add-button" type="button" data-name="Es Teh" data-price="15000">+ Tambah</button></div>
             </div>
           </article>
 
-          <!-- Bakso Tetelan -->
-          <article class="menu-card">
-            <div class="menu-image"><img src="menu-bakso-tetelan.webp" alt="Bakso tetelan" loading="lazy" /></div>
+          <article class="menu-card" data-category="makanan">
+            <div class="menu-image menu-poster"><img src="menu-bakso-tetelan.webp" alt="Bakso sapi asli tetelan" loading="lazy" /></div>
             <div class="menu-content">
+              <span class="menu-category">Makanan</span>
               <h3>Bakso Sapi Asli Tetelan</h3>
-              <p>Bakso sapi dengan tetelan dan kuah hangat gurih.</p>
-              <div class="menu-bottom"><strong class="price">Rp12.000</strong><button class="add-button" data-name="Bakso Sapi Tetelan" data-price="12000">+ Tambah</button></div>
+              <p>Bakso sapi dengan tetelan dan kuah hangat yang gurih.</p>
+              <div class="menu-bottom"><strong class="price">Rp12.000</strong><button class="add-button" type="button" data-name="Bakso Sapi Asli Tetelan" data-price="12000">+ Tambah</button></div>
             </div>
           </article>
 
-          <!-- Mie Ayam -->
-          <article class="menu-card">
-            <div class="menu-image"><img src="menu-mie-ayam.webp" alt="Mie ayam" loading="lazy" /></div>
+          <article class="menu-card" data-category="makanan">
+            <div class="menu-image menu-poster"><img src="menu-mie-ayam.webp" alt="Mie ayam ceker pangsit" loading="lazy" /></div>
             <div class="menu-content">
+              <span class="menu-category">Makanan</span>
               <h3>Mie Ayam Ceker Pangsit</h3>
               <p>Mie ayam lengkap dengan ceker dan pangsit renyah.</p>
-              <div class="menu-bottom"><strong class="price">Rp12.000</strong><button class="add-button" data-name="Mie Ayam" data-price="12000">+ Tambah</button></div>
+              <div class="menu-bottom"><strong class="price">Rp12.000</strong><button class="add-button" type="button" data-name="Mie Ayam Ceker Pangsit" data-price="12000">+ Tambah</button></div>
             </div>
           </article>
 
-          <!-- Bakso Telur -->
-          <article class="menu-card">
-            <div class="menu-image"><img src="menu-bakso-telur.webp" alt="Bakso telur" loading="lazy" /></div>
+          <article class="menu-card" data-category="makanan">
+            <div class="menu-image menu-poster"><img src="menu-bakso-telur.webp" alt="Bakso telur" loading="lazy" /></div>
             <div class="menu-content">
+              <span class="menu-category">Makanan</span>
               <h3>Bakso Telur</h3>
-              <p>Bakso dengan isian telur utuh.</p>
-              <div class="menu-bottom"><strong class="price">Rp12.000</strong><button class="add-button" data-name="Bakso Telur" data-price="12000">+ Tambah</button></div>
+              <p>Bakso dengan isian telur, cocok untuk makan siang.</p>
+              <div class="menu-bottom"><strong class="price">Rp12.000</strong><button class="add-button" type="button" data-name="Bakso Telur" data-price="12000">+ Tambah</button></div>
             </div>
           </article>
 
-          <!-- Milo -->
-          <article class="menu-card">
-            <div class="menu-image"><img src="menu-milo.webp" alt="Milo Ice" loading="lazy" /></div>
+          <article class="menu-card" data-category="minuman">
+            <div class="menu-image menu-poster"><img src="menu-milo.webp" alt="Milo Ice dingin" loading="lazy" /></div>
             <div class="menu-content">
+              <span class="menu-category">Minuman</span>
               <h3>Milo Ice</h3>
-              <p>Minuman cokelat dingin menyegarkan.</p>
-              <div class="menu-bottom"><strong class="price">Rp6.000</strong><button class="add-button" data-name="Milo Ice" data-price="6000">+ Tambah</button></div>
+              <p>Minuman cokelat dingin untuk teman makan yang manis dan segar.</p>
+               <div class="menu-bottom"><strong class="price">Rp6.000</strong><button class="add-button" type="button" data-name="Bakso Telur" data-price="6000">+ Tambah</button></div>
+
             </div>
           </article>
 
-          <!-- Kopi -->
-          <article class="menu-card">
-            <div class="menu-image"><img src="menu-kopi.webp" alt="Kopi Susu" loading="lazy" /></div>
+          <article class="menu-card" data-category="minuman">
+            <div class="menu-image menu-poster"><img src="menu-kopi.webp" alt="Aneka minuman kopi dan kopi susu" loading="lazy" /></div>
             <div class="menu-content">
+              <span class="menu-category">Minuman</span>
               <h3>Kopi Susu</h3>
-              <p>Kopi susu nikmat teman bersantai.</p>
-              <div class="menu-bottom"><strong class="price">Rp6.000</strong><button class="add-button" data-name="Kopi Susu" data-price="6000">+ Tambah</button></div>
+              <p>Kopi susu ringan untuk menemani siang sampai sore.</p>
+               <div class="menu-bottom"><strong class="price">Rp6.000</strong><button class="add-button" type="button" data-name="Bakso Telur" data-price="6000">+ Tambah</button></div>
+
             </div>
           </article>
 
-          <!-- Es Teh -->
-          <article class="menu-card">
-            <div class="menu-image"><img src="menu-es-teh.webp" alt="Es teh" loading="lazy" /></div>
+          <article class="menu-card" data-category="minuman">
+            <div class="menu-image menu-poster"><img src="menu-es-teh.webp" alt="Es teh dingin" loading="lazy" /></div>
             <div class="menu-content">
+              <span class="menu-category">Minuman</span>
               <h3>Es Teh</h3>
-              <p>Teh manis dingin segar.</p>
-              <div class="menu-bottom"><strong class="price">Rp3.000</strong><button class="add-button" data-name="Es Teh" data-price="3000">+ Tambah</button></div>
+              <p>Teh manis dingin yang simpel dan menyegarkan.</p>
+              <div class="menu-bottom"><strong class="price">Rp3.000</strong><button class="add-button" type="button" data-name="Es Teh" data-price="3000">+ Tambah</button></div>
             </div>
           </article>
 
-          <!-- Es Jeruk -->
-          <article class="menu-card">
-            <div class="menu-image"><img src="menu-es-jeruk.webp" alt="Es jeruk" loading="lazy" /></div>
+          <article class="menu-card" data-category="minuman">
+            <div class="menu-image menu-poster"><img src="menu-es-jeruk.webp" alt="Es jeruk segar" loading="lazy" /></div>
             <div class="menu-content">
-              <h3>Es Jeruk</h3>
-              <p>Jeruk peras asli segar.</p>
-              <div class="menu-bottom"><strong class="price">Rp7.000</strong><button class="add-button" data-name="Es Jeruk" data-price="7000">+ Tambah</button></div>
+              <span class="menu-category">Minuman</span>
+              <h3>Es Jeruk / Jeruk Panas</h3>
+              <p>Pilih dingin atau hangat sesuai selera.</p>
+              <div class="menu-bottom"><strong class="price">Rp7.000</strong><button class="add-button" type="button" data-name="Es Jeruk / Jeruk Panas" data-price="7000">+ Tambah</button></div>
             </div>
           </article>
 
-          <!-- Pop Ice -->
-          <article class="menu-card">
-            <div class="menu-image"><img src="menu-pop-ice.webp" alt="Pop Ice" loading="lazy" /></div>
+          <article class="menu-card" data-category="minuman">
+            <div class="menu-image menu-poster"><img src="menu-pop-ice.webp" alt="Pop Ice aneka varian" loading="lazy" /></div>
             <div class="menu-content">
+              <span class="menu-category">Minuman</span>
               <h3>Pop Ice Milky</h3>
-              <p>Minuman susu aneka rasa.</p>
-              <div class="menu-bottom"><strong class="price">Rp5.000</strong><button class="add-button" data-name="Pop Ice" data-price="5000">+ Tambah</button></div>
+              <p>Minuman creamy dengan pilihan rasa yang bisa dikonfirmasi lewat WA.</p>
+              <div class="menu-bottom"><strong class="price">Rp5.000</strong><button class="add-button" type="button" data-name="Pop Ice Milky" data-price="5000">+ Tambah</button></div>
             </div>
           </article>
         </div>
+
+        <p class="price-note">*Harga Lumpia Beef, Milo, dan Kopi masih berupa placeholder konsep. Silakan ganti sesuai harga jual aktual.</p>
       </div>
     </section>
 
@@ -171,17 +228,34 @@
       <div class="container process-grid">
         <div class="process-copy">
           <p class="eyebrow red">HIGHLIGHT PRODUK</p>
-          <h2>Lumpia beef yang bikin lapar.</h2>
+          <h2>Lumpia beef yang visualnya langsung bikin lapar.</h2>
+          <p>Bagian ini memanfaatkan cuplikan video asli untuk memperkuat kepercayaan calon pembeli: tampilkan isian, proses pembungkusan, dan hasil akhirnya.</p>
           <ul class="check-list">
-            <li><span>✓</span> Foto produk asli</li>
-            <li><span>✓</span> Proses bersih dan rapi</li>
-            <li><span>✓</span> Langsung kirim via WA</li>
+            <li><span>✓</span> Foto produk asli, bukan stok generik</li>
+            <li><span>✓</span> Cerita proses singkat dan mudah dipahami</li>
+            <li><span>✓</span> Tombol order selalu dekat dari visual produk</li>
           </ul>
+          <button class="button button-primary quick-add" type="button" data-name="Lumpia Beef" data-price="0" data-category="makanan">Pesan Lumpia Beef</button>
         </div>
         <div class="process-gallery">
-          <figure><img src="lumpia_ingredients.jpg" alt="Isian" /><figcaption>Isian gurih</figcaption></figure>
-          <figure><img src="lumpia_wrap.jpg" alt="Proses" /><figcaption>Dibuat fresh</figcaption></figure>
-          <figure><img src="lumpia_finished.jpg" alt="Hasil" /><figcaption>Siap dinikmati</figcaption></figure>
+          <figure class="process-main"><img src="lumpia_ingredients.jpg" alt="Isian lumpia beef" /><figcaption>01 — Isian gurih dan creamy</figcaption></figure>
+          <figure><img src="lumpia_wrap.jpg" alt="Lumpia beef dibungkus" /><figcaption>02 — Dibungkus rapi</figcaption></figure>
+          <figure><img src="lumpia_finished.jpg" alt="Lumpia beef siap dijual" /><figcaption>03 — Siap dipesan</figcaption></figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="section order-section" id="cara-pesan">
+      <div class="container">
+        <div class="section-heading centered">
+          <p class="eyebrow blue">CARA PESAN</p>
+          <h2>Tiga langkah, pesanan langsung masuk WhatsApp.</h2>
+          <p>Tidak perlu membuat akun atau mengunduh aplikasi tambahan.</p>
+        </div>
+        <div class="steps-grid">
+          <article class="step-card"><span class="step-number">01</span><div class="step-icon">🍜</div><h3>Pilih menu</h3><p>Klik tombol <strong>Tambah</strong> pada makanan atau minuman yang kamu mau.</p></article>
+          <article class="step-card"><span class="step-number">02</span><div class="step-icon">📝</div><h3>Lengkapi pesanan</h3><p>Atur jumlah, isi nama, alamat, dan catatan tambahan bila ada.</p></article>
+          <article class="step-card"><span class="step-number">03</span><div class="step-icon">💬</div><h3>Kirim ke WhatsApp</h3><p>Konfirmasi stok, total harga, dan ongkir bersama admin melalui chat.</p></article>
         </div>
       </div>
     </section>
@@ -189,30 +263,88 @@
     <section class="section info-section" id="info">
       <div class="container info-grid">
         <div class="info-panel blue-panel">
-          <h2>Info Kedai</h2>
-          <p>Jam buka: 11.00 WIB - Habis</p>
-          <p>Ongkir mulai Rp3.000-an saja!</p>
+          <p class="eyebrow white">INFO KEDAI</p>
+          <h2>Simpan informasinya, jangan sampai kehabisan.</h2>
+          <div class="info-list">
+            <div><span>⏰</span><p><small>Jam buka</small><strong>11.00 WIB - sampai habis</strong></p></div>
+            <div><span>🛵</span><p><small>Ongkir</small><strong>Mulai Rp3.000*</strong></p></div>
+            <div><span>📍</span><p><small>Area kirim</small><strong>Konfirmasi via WhatsApp</strong></p></div>
+          </div>
+          <small class="muted-white">*Biaya kirim mengikuti jarak dan area pengantaran.</small>
         </div>
+
         <div class="info-panel contact-panel">
-          <h3>Chat WhatsApp</h3>
-          <a class="contact-row" href="https://wa.me/6288212951881">0882-1295-1881 (Mba Lutfi)</a>
+          <span class="contact-bubble">Admin siap menerima pesanan</span>
+          <h3>Pesan ke nomor yang tersedia</h3>
+          <p>Gunakan nomor utama untuk pemesanan. Nomor kedua dapat ditampilkan sebagai alternatif.</p>
+          <a class="contact-row" href="https://wa.me/6288212951881?text=Halo%20Mba%20Lutfi%2C%20saya%20mau%20pesan." target="_blank" rel="noopener">
+            <span class="contact-avatar">L</span><span><small>WhatsApp utama</small><strong>0882-1295-1881 — Mba Lutfi</strong></span><b>→</b>
+          </a>
+          <a class="contact-row" href="https://wa.me/6282325779806?text=Halo%20Mba%20Nita%2C%20saya%20mau%20pesan." target="_blank" rel="noopener">
+            <span class="contact-avatar alt">N</span><span><small>WhatsApp alternatif</small><strong>0823-2577-9806 — Mba Nita</strong></span><b>→</b>
+          </a>
         </div>
+      </div>
+    </section>
+
+    <section class="final-cta">
+      <div class="container final-cta-inner">
+        <div>
+          <p class="eyebrow white">SUDAH TAHU MAU PESAN APA?</p>
+          <h2>Buka chat, kirim pesanan, dan tunggu makanan favoritmu datang.</h2>
+        </div>
+        <button class="button button-yellow open-cart" type="button">Lihat Pesanan <span class="cart-count-inline">0</span></button>
       </div>
     </section>
   </main>
 
   <footer class="site-footer">
-    <div class="container">
-      <img src="logo-kedai-pojok.png" alt="Logo" style="width:100px"/>
-      <p>&copy; 2024 Kedai Pojok Mba Lutfi</p>
+    <div class="container footer-grid">
+      <a class="brand brand-logo footer-brand" href="#top" aria-label="Kedai Pojok Mba Lutfi">
+        <img src="logo-kedai-pojok.png" alt="Logo Kedai Pojok Mba Lutfi" />
+      </a>
+      <p>Konsep landing page kuliner dengan pemesanan langsung melalui WhatsApp.</p>
+      <a href="#top">Kembali ke atas ↑</a>
     </div>
   </footer>
 
-  <button class="floating-cart open-cart">🛍 <span class="cart-count">0</span> item</button>
+  <button class="floating-cart open-cart" type="button" aria-label="Buka daftar pesanan">
+    <span class="floating-cart-icon">🛍</span>
+    <span><small>Pesanan</small><strong><span class="cart-count">0</span> item</strong></span>
+  </button>
 
-  <aside class="cart-drawer" hidden>
-    <!-- Bagian keranjang belanja -->
+  <a class="floating-wa" href="https://wa.me/6288212951881?text=Halo%20Mba%20Lutfi%2C%20saya%20mau%20pesan." target="_blank" rel="noopener" aria-label="Chat WhatsApp">WA</a>
+
+  <div class="drawer-backdrop" hidden></div>
+  <aside class="cart-drawer" aria-hidden="true" aria-label="Daftar pesanan">
+    <div class="drawer-header">
+      <div><small>PESANAN SAYA</small><h2>Siap dikirim ke WhatsApp</h2></div>
+      <button class="drawer-close" type="button" aria-label="Tutup daftar pesanan">×</button>
+    </div>
+    <div class="drawer-body">
+      <div class="empty-cart">
+        <div>🛍</div><h3>Belum ada menu dipilih</h3><p>Tambahkan makanan atau minuman dari daftar menu.</p>
+      </div>
+      <div class="cart-items" aria-live="polite"></div>
+
+      <div class="order-form">
+        <label>Nama pemesan<input id="customerName" type="text" placeholder="Contoh: Rina" /></label>
+        <label>Alamat / patokan<textarea id="customerAddress" rows="3" placeholder="Tulis alamat dan patokan pengantaran"></textarea></label>
+        <label>Catatan tambahan<textarea id="customerNote" rows="2" placeholder="Contoh: es sedikit, sambal dipisah"></textarea></label>
+      </div>
+    </div>
+    <div class="drawer-footer">
+      <div class="subtotal-breakdown" aria-live="polite">
+        <div class="subtotal-row subtotal-row-detail"><span>Subtotal makanan terdata</span><strong id="foodSubtotal">Rp0</strong></div>
+        <div class="subtotal-row subtotal-row-detail"><span>Subtotal minuman terdata</span><strong id="drinkSubtotal">Rp0</strong></div>
+        <div class="subtotal-row subtotal-row-total"><span>Subtotal menu terdata</span><strong id="subtotal">Rp0</strong></div>
+      </div>
+      <p id="subtotalNote">Subtotal otomatis mengikuti jenis menu dan jumlah yang dipilih. Ongkir dikonfirmasi melalui WhatsApp.</p>
+      <button class="button button-wa send-order" type="button">Kirim Pesanan ke WhatsApp</button>
+    </div>
   </aside>
+
+  <div class="toast" role="status" aria-live="polite">Menu ditambahkan ke pesanan</div>
 
   <script src="script.js"></script>
 </body>
