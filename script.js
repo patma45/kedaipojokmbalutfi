@@ -330,3 +330,24 @@
   restoreCart();
   renderCart();
 })();
+
+// Ambil elemen tombol
+const backToTopBtn = document.getElementById("backToTop");
+
+// Fungsi untuk memantau scroll
+window.addEventListener("scroll", () => {
+  // Jika scroll lebih dari 300px dari atas, munculkan tombol
+  if (window.pageYOffset > 300) {
+    backToTopBtn.classList.add("show");
+  } else {
+    backToTopBtn.classList.remove("show");
+  }
+});
+
+// Fungsi saat tombol diklik
+backToTopBtn.addEventListener("click", () => {
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth" // Efek scroll halus
+  });
+});
