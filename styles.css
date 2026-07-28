@@ -499,8 +499,12 @@ body{
     overflow-x:hidden;
 }
 
-.container{
-    width:min(calc(100% - 80px), 1180px);
+.container {
+    width:100%;
+    max-width:none;
+    padding-left:70px;
+    padding-right:70px;
+    margin:0 auto;
 }
 
 }
