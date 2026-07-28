@@ -233,8 +233,20 @@ button { color: inherit; }
 
 .site-footer { padding: 24px 0; background: #071e30; color: rgba(255,255,255,.72); }
 .footer-grid { display: grid; grid-template-columns: 170px 1fr auto; align-items: center; gap: 28px; }
-.footer-brand { justify-self: start; padding: 6px 10px; border-radius: 18px; background: white; box-shadow: 0 12px 28px rgba(0,0,0,.16); }
-.footer-brand img { width: 142px; max-height: 96px; filter: none; }
+.footer-brand {
+  justify-self: start;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.footer-brand img {
+  width: 142px;
+  max-height: 96px;
+  filter: none;
+  background: transparent;
+}
 .footer-grid p { margin: 0; text-align: center; font-size: 12px; }
 .footer-grid > a:not(.footer-brand) { font-size: 12px; font-weight: 900; color: white; }
 
