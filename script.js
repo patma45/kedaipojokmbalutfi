@@ -273,7 +273,7 @@
     }
 
     const message = [
-      "Halo Mba Lutfi, saya mau pesan:",
+      "Halo Mba Nita, saya mau pesan:",
       "",
       ...itemLines,
       "",
