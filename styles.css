@@ -383,6 +383,55 @@ button { color: inherit; }
 .menu-image.menu-poster {
   display: block;
 }
+/* =========================
+   HIGHLIGHT PRODUK LAYOUT
+   TEXT LEFT - IMAGE RIGHT
+========================= */
+
+.process-grid-single {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 50px;
+  align-items: center;
+}
+
+.process-copy {
+  max-width: 520px;
+}
+
+.process-image-single {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.main-highlight-img {
+  width: 100%;
+  max-width: 520px;
+  height: auto;
+  object-fit: contain;
+  border-radius: 25px;
+  box-shadow: var(--shadow-soft);
+}
+
+
+/* Responsive Tablet & Mobile */
+@media (max-width: 980px) {
+
+  .process-grid-single {
+    grid-template-columns: 1fr;
+    gap: 35px;
+  }
+
+  .process-copy {
+    max-width: 100%;
+  }
+
+  .process-image-single {
+    order: 2;
+  }
+
+}
 
 /* =========================
    BACK TO TOP FINAL
