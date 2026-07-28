@@ -1,5 +1,5 @@
 (() => {
-  const WHATSAPP_NUMBER = "6288212951881";
+  const WHATSAPP_NUMBER = "6282325779806";
   const CART_STORAGE_KEY = "kedai-pojok-cart-v2";
   const cart = new Map();
 
