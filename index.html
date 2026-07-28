@@ -133,20 +133,36 @@ if (window.innerWidth > 980) {
           </div>
         </div>
 
-        <div class="menu-grid">
-          <article class="menu-card featured" data-category="makanan">
-            <div class="menu-image menu-poster">
-              <img src="mie-ganaz.png" alt="Lumpia beef dengan isian daging" loading="lazy" />
-              <span class="menu-badge red">Paling dicari</span>
-            </div>
-            <div class="menu-content">
-              <span class="menu-category">Mie Pedas</span>
-              <h3>Mie Ganazzz</h3>
-              <p>Mie goreng pedas gurih dengan topping ayam cincang, smoked beef, dan pangsit renyah. Perpaduan sempurna antara rasa pedas nampol dan tekstur yang garing.</p>
-              <div class="menu-bottom">
-                <div class="menu-bottom"><strong class="price">Rp15.000</strong><button class="add-button" type="button" data-name="Mie Ganazzz" data-price="15000">+ Tambah</button></div>
-            </div>
-          </article>
+       <article class="menu-card featured" data-category="makanan">
+  <div class="menu-image menu-poster">
+    <img src="mie-ganaz.png" alt="Mie Ganazzz" loading="lazy" />
+    <span class="menu-badge red">Paling dicari</span>
+  </div>
+  <div class="menu-content">
+    <span class="menu-category">Mie Pedas</span>
+    <h3>Mie Ganazzz</h3>
+    <p>Mie goreng pedas gurih dengan topping ayam cincang, smoked beef, dan pangsit renyah. Perpaduan sempurna antara rasa pedas nampol dan tekstur yang garing.</p>
+    
+    <!-- TAMBAHKAN KODE INI -->
+    <div class="level-container" style="margin-bottom: 10px;">
+      <label for="mie-level" style="font-size: 0.8rem; display: block; margin-bottom: 4px; color: #666;">Pilih Level Pedas:</label>
+      <select id="mie-level" class="level-select" style="width: 100%; padding: 8px; border-radius: 8px; border: 1px solid #ddd; font-family: inherit;">
+        <option value="1">Level 1 (Original)</option>
+        <option value="2">Level 2 (Sedang)</option>
+        <option value="3">Level 3 (Pedas)</option>
+        <option value="4">Level 4 (Extra Pedas)</option>
+        <option value="5">Level 5 (Ganazzz!)</option>
+      </select>
+    </div>
+    <!-- SELESAI TAMBAHAN -->
+
+    <div class="menu-bottom">
+      <strong class="price">Rp15.000</strong>
+      <!-- Perhatikan id="add-mie-ganazzz" yang kita tambahkan di bawah -->
+      <button class="add-button" id="add-mie-ganazzz" type="button" data-name="Mie Ganazzz (Lvl 1)" data-price="15000">+ Tambah</button>
+    </div>
+  </div>
+</article>
 
           <article class="menu-card" data-category="makanan">
             <div class="menu-image menu-poster"><img src="menu-bakso-tetelan.webp" alt="Bakso sapi asli tetelan" loading="lazy" /></div>
