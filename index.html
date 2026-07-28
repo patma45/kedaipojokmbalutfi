@@ -1,397 +1,385 @@
-(() => {
-  const WHATSAPP_NUMBER = "6282325779806";
-  const CART_STORAGE_KEY = "kedai-pojok-cart-v2";
-  const cart = new Map();
-
-  const formatRupiah = (value) => new Intl.NumberFormat("id-ID", {
-    style: "currency",
-    currency: "IDR",
-    maximumFractionDigits: 0
-  }).format(Number.isFinite(Number(value)) ? Number(value) : 0);
-
-  const normalizePrice = (value) => {
-    const price = Number(value);
-    return Number.isFinite(price) && price > 0 ? price : 0;
-  };
-
-  const normalizeQty = (value) => {
-    const qty = Number.parseInt(value, 10);
-    return Number.isFinite(qty) && qty > 0 ? qty : 1;
-  };
-
-  const normalizeCategory = (value) => value === "minuman" ? "minuman" : "makanan";
-
-  const els = {
-    drawer: document.querySelector(".cart-drawer"),
-    backdrop: document.querySelector(".drawer-backdrop"),
-    close: document.querySelector(".drawer-close"),
-    items: document.querySelector(".cart-items"),
-    empty: document.querySelector(".empty-cart"),
-    subtotal: document.querySelector("#subtotal"),
-    foodSubtotal: document.querySelector("#foodSubtotal"),
-    drinkSubtotal: document.querySelector("#drinkSubtotal"),
-    subtotalNote: document.querySelector("#subtotalNote"),
-    counts: document.querySelectorAll(".cart-count, .cart-count-inline"),
-    toast: document.querySelector(".toast"),
-    send: document.querySelector(".send-order"),
-    navToggle: document.querySelector(".nav-toggle"),
-    nav: document.querySelector(".main-nav"),
-    floatingCart: document.querySelector(".floating-cart")
-  };
-
-  function summarizeCart(items = [...cart.values()]) {
-    const summary = {
-      totalQty: 0,
-      knownSubtotal: 0,
-      unknownQty: 0,
-      unknownItems: [],
-      makanan: { qty: 0, knownSubtotal: 0, unknownQty: 0 },
-      minuman: { qty: 0, knownSubtotal: 0, unknownQty: 0 }
-    };
-
-    items.forEach((item) => {
-      const category = normalizeCategory(item.category);
-      const qty = normalizeQty(item.qty);
-      const price = normalizePrice(item.price);
-      const lineTotal = price * qty;
-
-      summary.totalQty += qty;
-      summary.knownSubtotal += lineTotal;
-      summary[category].qty += qty;
-      summary[category].knownSubtotal += lineTotal;
-
-      if (price === 0) {
-        summary.unknownQty += qty;
-        summary[category].unknownQty += qty;
-        summary.unknownItems.push(`${item.name} x${qty}`);
-      }
-    });
-
-    return summary;
-  }
-
-  function formatSubtotalDisplay(knownSubtotal, unknownQty) {
-    if (unknownQty > 0 && knownSubtotal === 0) return "Konfirmasi via WA";
-    if (unknownQty > 0) return `${formatRupiah(knownSubtotal)} + konfirmasi`;
-    return formatRupiah(knownSubtotal);
-  }
-
-  function saveCart() {
-    try {
-      localStorage.setItem(CART_STORAGE_KEY, JSON.stringify([...cart.values()]));
-    } catch (error) {
-      // Kalkulasi tetap berjalan bila penyimpanan lokal diblokir browser.
-    }
-  }
-
-  function restoreCart() {
-    try {
-      const saved = JSON.parse(localStorage.getItem(CART_STORAGE_KEY) || "[]");
-      if (!Array.isArray(saved)) return;
-
-      saved.forEach((item) => {
-        if (!item || typeof item.name !== "string" || !item.name.trim()) return;
-        cart.set(item.name.trim(), {
-          name: item.name.trim(),
-          price: normalizePrice(item.price),
-          qty: normalizeQty(item.qty),
-          category: normalizeCategory(item.category)
-        });
-      });
-    } catch (error) {
-      try { localStorage.removeItem(CART_STORAGE_KEY); } catch (storageError) {}
-    }
-  }
-
-  function showToast(message = "Menu ditambahkan ke pesanan") {
-    if (!els.toast) return;
-    els.toast.textContent = message;
-    els.toast.classList.add("show");
-    window.clearTimeout(showToast.timer);
-    showToast.timer = window.setTimeout(() => els.toast.classList.remove("show"), 1700);
-  }
-
-  function openDrawer() {
-    if (!els.drawer || !els.backdrop) return;
-    els.drawer.classList.add("is-open");
-    els.drawer.setAttribute("aria-hidden", "false");
-    els.backdrop.hidden = false;
-    document.body.classList.add("drawer-open");
-  }
-
-  function closeDrawer() {
-    if (!els.drawer || !els.backdrop) return;
-    els.drawer.classList.remove("is-open");
-    els.drawer.setAttribute("aria-hidden", "true");
-    els.backdrop.hidden = true;
-    document.body.classList.remove("drawer-open");
-  }
-
-  function addItem(name, price, category) {
-    if (!name) return;
-    const cleanName = String(name).trim();
-    const item = cart.get(cleanName) || {
-      name: cleanName,
-      price: normalizePrice(price),
-      qty: 0,
-      category: normalizeCategory(category)
-    };
-
-    item.price = normalizePrice(price);
-    item.category = normalizeCategory(category || item.category);
-    item.qty += 1;
-    cart.set(cleanName, item);
-
-    saveCart();
-    renderCart();
-    showToast(`${cleanName} ditambahkan`);
-  }
-
-  function changeQty(name, delta) {
-    const item = cart.get(name);
-    if (!item) return;
-
-    item.qty += Number(delta) || 0;
-    if (item.qty <= 0) cart.delete(name);
-    else cart.set(name, item);
-
-    saveCart();
-    renderCart();
-  }
-
-  function createCartItem(item) {
-    const row = document.createElement("div");
-    row.className = "cart-item";
-
-    const copy = document.createElement("div");
-    copy.className = "cart-item-copy";
-
-    const category = document.createElement("span");
-    category.className = "cart-item-category";
-    category.textContent = normalizeCategory(item.category) === "minuman" ? "Minuman" : "Makanan";
-
-    const name = document.createElement("strong");
-    name.textContent = item.name;
-
-    const detail = document.createElement("small");
-    const price = normalizePrice(item.price);
-    detail.textContent = price > 0
-      ? `${formatRupiah(price)} × ${item.qty} = ${formatRupiah(price * item.qty)}`
-      : `Harga dikonfirmasi via WA × ${item.qty}`;
-
-    copy.append(category, name, detail);
-
-    const control = document.createElement("div");
-    control.className = "qty-control";
-
-    const minus = document.createElement("button");
-    minus.type = "button";
-    minus.setAttribute("aria-label", `Kurangi ${item.name}`);
-    minus.textContent = "−";
-    minus.addEventListener("click", () => changeQty(item.name, -1));
-
-    const qty = document.createElement("span");
-    qty.textContent = item.qty;
-
-    const plus = document.createElement("button");
-    plus.type = "button";
-    plus.setAttribute("aria-label", `Tambah ${item.name}`);
-    plus.textContent = "+";
-    plus.addEventListener("click", () => changeQty(item.name, 1));
-
-    control.append(minus, qty, plus);
-    row.append(copy, control);
-    return row;
-  }
-
-  function renderCart() {
-    const items = [...cart.values()];
-    const summary = summarizeCart(items);
-
-    els.counts.forEach((element) => { element.textContent = summary.totalQty; });
-    els.floatingCart?.classList.toggle("has-items", summary.totalQty > 0);
-
-    if (els.empty) els.empty.style.display = items.length ? "none" : "block";
-    if (els.items) {
-      els.items.replaceChildren(...items.map(createCartItem));
-    }
-
-    if (els.foodSubtotal) {
-      els.foodSubtotal.textContent = formatSubtotalDisplay(
-        summary.makanan.knownSubtotal,
-        summary.makanan.unknownQty
-      );
-    }
-    if (els.drinkSubtotal) {
-      els.drinkSubtotal.textContent = formatSubtotalDisplay(
-        summary.minuman.knownSubtotal,
-        summary.minuman.unknownQty
-      );
-    }
-    if (els.subtotal) {
-      els.subtotal.textContent = formatSubtotalDisplay(summary.knownSubtotal, summary.unknownQty);
-    }
-
-    if (els.subtotalNote) {
-      if (summary.unknownItems.length) {
-        els.subtotalNote.textContent = `Belum termasuk harga ${summary.unknownItems.join(", ")}. Harga tersebut dan ongkir dikonfirmasi melalui WhatsApp.`;
-        els.subtotalNote.classList.add("has-pending-price");
-      } else {
-        els.subtotalNote.textContent = "Subtotal otomatis mengikuti jenis menu dan jumlah yang dipilih. Ongkir dikonfirmasi melalui WhatsApp.";
-        els.subtotalNote.classList.remove("has-pending-price");
-      }
-    }
-  }
-
-  function sendToWhatsApp() {
-    const items = [...cart.values()];
-    if (!items.length) {
-      showToast("Pilih menu terlebih dahulu");
-      return;
-    }
-
-    const customerName = document.querySelector("#customerName")?.value.trim() || "-";
-    const address = document.querySelector("#customerAddress")?.value.trim() || "-";
-    const note = document.querySelector("#customerNote")?.value.trim() || "-";
-    const summary = summarizeCart(items);
-
-    const itemLines = items.map((item, index) => {
-      const price = normalizePrice(item.price);
-      const lineTotal = price > 0 ? formatRupiah(price * item.qty) : "konfirmasi harga";
-      const category = normalizeCategory(item.category) === "minuman" ? "Minuman" : "Makanan";
-      return `${index + 1}. [${category}] ${item.name} x${item.qty} — ${lineTotal}`;
-    });
-
-    const summaryLines = [
-      `Subtotal makanan terdata: ${formatRupiah(summary.makanan.knownSubtotal)}`,
-      `Subtotal minuman terdata: ${formatRupiah(summary.minuman.knownSubtotal)}`,
-      `Subtotal menu terdata: ${formatRupiah(summary.knownSubtotal)}`
-    ];
-
-    if (summary.unknownItems.length) {
-      summaryLines.push(`Harga belum terdata: ${summary.unknownItems.join(", ")}`);
-    }
-
-    const message = [
-      "Halo Mba Nita, saya mau pesan:",
-      "",
-      ...itemLines,
-      "",
-      ...summaryLines,
-      "Ongkir: mohon dikonfirmasi sesuai alamat.",
-      "",
-      `Nama: ${customerName}`,
-      `Alamat/patokan: ${address}`,
-      `Catatan: ${note}`,
-      "",
-      "Mohon konfirmasi stok, harga yang belum terdata, dan total pembayarannya. Terima kasih."
-    ].join("\n");
-
-    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
-    window.open(url, "_blank", "noopener");
-  }
-
-  document.querySelectorAll(".add-button, .quick-add").forEach((button) => {
-    button.addEventListener("click", () => {
-      const category = button.dataset.category
-        || button.closest(".menu-card")?.dataset.category
-        || "makanan";
-      addItem(button.dataset.name, button.dataset.price, category);
-    });
-  });
-
-  document.querySelectorAll(".open-cart").forEach((button) => button.addEventListener("click", openDrawer));
-  els.close?.addEventListener("click", closeDrawer);
-  els.backdrop?.addEventListener("click", closeDrawer);
-  els.send?.addEventListener("click", sendToWhatsApp);
-  document.addEventListener("keydown", (event) => { if (event.key === "Escape") closeDrawer(); });
-
-  document.querySelectorAll(".category-tab").forEach((tab) => {
-    tab.addEventListener("click", () => {
-      document.querySelectorAll(".category-tab").forEach((button) => button.classList.remove("active"));
-      tab.classList.add("active");
-      const filter = tab.dataset.filter;
-      document.querySelectorAll(".menu-card").forEach((card) => {
-        card.classList.toggle("is-hidden", filter !== "all" && card.dataset.category !== filter);
-      });
-    });
-  });
-
-  els.navToggle?.addEventListener("click", () => {
-    const isOpen = els.nav?.classList.toggle("is-open") || false;
-    els.navToggle.setAttribute("aria-expanded", String(isOpen));
-  });
-
-  els.nav?.querySelectorAll("a").forEach((link) => link.addEventListener("click", () => {
-    els.nav.classList.remove("is-open");
-    els.navToggle?.setAttribute("aria-expanded", "false");
-  }));
-
-  restoreCart();
-  renderCart();
-})();
-
-// Ambil elemen tombol
-const backToTopBtn = document.getElementById("backToTop");
-
-// Fungsi untuk memantau scroll
-window.addEventListener("scroll", () => {
-  // Jika scroll lebih dari 300px dari atas, munculkan tombol
-  if (window.pageYOffset > 300) {
-    backToTopBtn.classList.add("show");
-  } else {
-    backToTopBtn.classList.remove("show");
-  }
-});
-
-// Fungsi saat tombol diklik
-backToTopBtn.addEventListener("click", () => {
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth" // Efek scroll halus
-  });
-});
-// BACK TO TOP
-
-const backToTop = document.getElementById("backToTop");
-
-if(backToTop){
-
-window.addEventListener("scroll", function(){
-
-    if(window.scrollY > 300){
-
-        backToTop.classList.add("show");
-
-    }else{
-
-        backToTop.classList.remove("show");
-
-    }
-
-});
-
-
-backToTop.addEventListener("click", function(){
-
-    window.scrollTo({
-        top:0,
-        behavior:"smooth"
-    });
-
-});
-
+<!doctype html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <meta name="theme-color" content="#169fee" />
+  <meta name="description" content="Pesan Bakso Tetelan, Lumpia Beef, minuman, dan catering Kedai Pojok Mba Lutfi via WhatsApp. Ongkir mulai Rp3.000-an." />
+  <title>Kedai Pojok Mba Lutfi — Pesan via WhatsApp</title>
+  <link rel="icon" href="assets/favicon.png" />
+  <link rel="stylesheet" href="styles.css" />
+<html lang="id">
+  <script>
+if (window.innerWidth > 980) {
+    let viewport = document.querySelector('meta[name="viewport"]');
+    viewport.setAttribute(
+        "content",
+        "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+    );
+} else {
+    let viewport = document.querySelector('meta[name="viewport"]');
+    viewport.setAttribute(
+        "content",
+        "width=device-width, initial-scale=1"
+    );
 }
-
-<script>
-  const levelSelect = document.getElementById('mie-level');
-  const addButton = document.getElementById('add-mie-ganazzz');
-
-  if (levelSelect && addButton) {
-    levelSelect.addEventListener('change', function() {
-      const selectedLevel = this.value;
-      // Mengubah attribute data-name agar sistem keranjang mencatat levelnya
-      addButton.setAttribute('data-name', `Mie Ganazzz (Lvl ${selectedLevel})`);
-    });
-  }
 </script>
+</head>
+<body>
+  <header class="site-header" id="top">
+    <div class="container nav-wrap">
+      <a class="brand brand-logo" href="#top" aria-label="Kedai Pojok Mba Lutfi — Bakso dan Mie Ayam">
+        <img src="logo-kedai-pojok.png" alt="Logo Kedai Pojok Mba Lutfi — Bakso dan Mie Ayam" />
+      </a>
+
+      <button class="nav-toggle" type="button" aria-label="Buka menu navigasi" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="main-nav" aria-label="Navigasi utama">
+        <a href="#menu">Menu</a>
+        <a href="#cara-pesan">Cara Pesan</a>
+        <a href="#info">Info Kedai Pojok Mba Lutfi</a>
+      </nav>
+    </div>
+  </header>
+</body>
+  
+  <main>
+    <section class="hero">
+      <div class="hero-dots hero-dots-a" aria-hidden="true"></div>
+      <div class="hero-dots hero-dots-b" aria-hidden="true"></div>
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <div class="status-badge">
+            <span class="status-dot"></span>
+            Buka 11.00 WIB - sampai habis
+          </div>
+
+          <p class="eyebrow">PESAN MUDAH • LANGSUNG WHATSAPP</p>
+          <h1 class="hero-title-long">Jajan Enak Gak Pake Mahal, <span>Ongkir Cuma Seharga Parkir!</span></h1>
+          <p class="hero-lead">
+            Mau Bakso Tetelan atau Mie Ganazzz? Tinggal klik WhatsApp, pesanan langsung meluncur ke depan pintu. Praktis, kenyang, kantong aman!
+          </p>
+
+          <div class="hero-actions">
+            <a class="button button-primary" href="#menu">Lihat Menu</a>
+            <a class="button button-light" href="https://wa.me/6282325779806?text=Halo%20Mba%20Nita%2C%20saya%20mau%20pesan." target="_blank" rel="noopener">
+              Chat Mba Lutfi/Nita
+            </a>
+          </div>
+
+          <div class="quick-facts" aria-label="Informasi singkat">
+            <div class="fact-card">
+              <span class="fact-icon" aria-hidden="true">🛵</span>
+              <div><strong>Ongkir Mulai 3.000 an Aja!</strong><small>Hemat, cuma seharga parkir</small></div>
+            </div>
+            <div class="fact-card">
+              <span class="fact-icon" aria-hidden="true">🍱</span>
+              <div><strong>Menerima Catering Segala Acara</strong><small>Pesan praktis via WhatsApp</small></div>
+            </div>
+            <div class="fact-card">
+              <span class="fact-icon" aria-hidden="true">⏰</span>
+              <div><strong>11.00 WIB</strong><small>Buka sampai habis</small></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-visual" aria-label="Visual aneka menu Kedai Pojok Mba Lutfi">
+          <div class="magic-door" aria-hidden="true">
+            <span class="door-knob"></span>
+          </div>
+          <div class="hero-photo-card">
+            <img src="menu-header.webp" alt="Aneka menu Kedai Pojok Mba Lutfi: bakso tetelan, bakso telur, lumpia beef, dan aneka minuman" fetchpriority="high" />
+            <span class="hero-tag">Mie Ganazzz</span>
+            <span class="hero-sticker">Favorit!</span>
+          </div>
+          <div class="magic-pocket" aria-hidden="true"></div>
+          <div class="floating-note note-left">
+            <span>★</span>
+            <div><strong>Menu variatif</strong><small>Makanan & minuman</small></div>
+          </div>
+          <div class="floating-note note-right">
+            <span>✓</span>
+            <div><strong>Tinggal chat</strong><small>Pesan langsung lewat WA</small></div>
+          </div>
+          <span class="spark spark-one">✦</span>
+          <span class="spark spark-two">✦</span>
+          <span class="spark spark-three">●</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="ticker" aria-label="Informasi kedai">
+      <div class="ticker-track">
+        <span>ONGKIR MULAI RP3.000</span><i>★</i>
+        <span>BUKA 11.00 WIB — SAMPAI HABIS</span><i>★</i>
+        <span>PESAN LANGSUNG VIA WHATSAPP</span><i>★</i>
+        <span>MENERIMA CATERING</span><i>★</i>
+      </div>
+    </section>
+
+    <section class="section menu-section" id="menu">
+      <div class="container">
+        <div class="section-heading split-heading">
+          <div>
+            <p class="eyebrow blue">MENU PILIHAN</p>
+            <h2>Mau makan atau minum apa hari ini?</h2>
+            <p>Pilih menu lalu klik <strong>Tambah</strong>. Daftar pesanan akan otomatis disiapkan untuk dikirim ke WhatsApp.</p>
+          </div>
+          <div class="category-tabs" role="group" aria-label="Filter kategori menu">
+            <button class="category-tab active" type="button" data-filter="all">Semua</button>
+            <button class="category-tab" type="button" data-filter="makanan">Makanan</button>
+            <button class="category-tab" type="button" data-filter="minuman">Minuman</button>
+          </div>
+        </div>
+
+        <div class="menu-grid">
+          <article class="menu-card featured" data-category="makanan">
+            <div class="menu-image menu-poster">
+              <img src="mie-ganaz.png" alt="Lumpia beef dengan isian daging" loading="lazy" />
+              <span class="menu-badge red">Paling dicari</span>
+            </div>
+            <div class="menu-content">
+              <span class="menu-category">Mie Pedas</span>
+              <h3>Mie Ganazzz</h3>
+              <p>Mie goreng pedas gurih dengan topping ayam cincang, smoked beef, dan pangsit renyah. Perpaduan sempurna antara rasa pedas nampol dan tekstur yang garing.</p>
+              <div class="menu-bottom">
+                <div class="menu-bottom"><strong class="price">Rp15.000</strong><button class="add-button" type="button" data-name="Mie Ganazzz" data-price="15000">+ Tambah</button></div>
+            </div>
+          </article>
+
+          <article class="menu-card" data-category="makanan">
+            <div class="menu-image menu-poster"><img src="menu-bakso-tetelan.webp" alt="Bakso sapi asli tetelan" loading="lazy" /></div>
+            <div class="menu-content">
+              <span class="menu-category">Makanan</span>
+              <h3>Bakso Sapi Asli Tetelan</h3>
+              <p>Bakso sapi dengan tetelan dan kuah hangat yang gurih.</p>
+              <div class="menu-bottom"><strong class="price">Rp12.000</strong><button class="add-button" type="button" data-name="Bakso Sapi Asli Tetelan" data-price="12000">+ Tambah</button></div>
+            </div>
+          </article>
+
+          <article class="menu-card" data-category="makanan">
+            <div class="menu-image menu-poster"><img src="menu-mie-ayam.webp" alt="Mie ayam ceker pangsit" loading="lazy" /></div>
+            <div class="menu-content">
+              <span class="menu-category">Makanan</span>
+              <h3>Mie Ayam Ceker Pangsit</h3>
+              <p>Mie ayam lengkap dengan ceker dan pangsit renyah.</p>
+              <div class="menu-bottom"><strong class="price">Rp12.000</strong><button class="add-button" type="button" data-name="Mie Ayam Ceker Pangsit" data-price="12000">+ Tambah</button></div>
+            </div>
+          </article>
+
+          <article class="menu-card" data-category="makanan">
+            <div class="menu-image menu-poster"><img src="menu-bakso-telur.webp" alt="Bakso telur" loading="lazy" /></div>
+            <div class="menu-content">
+              <span class="menu-category">Makanan</span>
+              <h3>Bakso Telur</h3>
+              <p>Bakso dengan isian telur, cocok untuk makan siang.</p>
+              <div class="menu-bottom"><strong class="price">Rp12.000</strong><button class="add-button" type="button" data-name="Bakso Telur" data-price="12000">+ Tambah</button></div>
+            </div>
+          </article>
+
+          <article class="menu-card" data-category="makanan">
+            <div class="menu-image menu-poster"><img src="lumpiabeef.png" alt="Lumpia Beef" loading="lazy" /></div>
+            <div class="menu-content">
+              <span class="menu-category">Makanan</span>
+              <h3>Lumpia Beef</h3>
+              <p>Gak perlu bingung cari camilan! dengan isian daging asli, saus lumer, harganya juara. Pesan sekarang sebelum kehabisan besti!</p>
+              <div class="menu-bottom"><strong class="price">Rp5.000</strong><button class="add-button" type="button" data-name="Lumpia Beef" data-price="5000">+ Tambah</button></div>
+            </div>
+          </article>
+
+
+          <article class="menu-card" data-category="minuman">
+            <div class="menu-image menu-poster"><img src="minuman-milo.png" alt="Milo Ice dingin" loading="lazy" /></div>
+            <div class="menu-content">
+              <span class="menu-category">Minuman</span>
+              <h3>Es Milo</h3>
+              <p>Minuman cokelat dingin untuk teman makan yang manis dan segar.</p>
+               <div class="menu-bottom"><strong class="price">Rp7.000</strong><button class="add-button" type="button" data-name="Milo Ice" data-price="6000">+ Tambah</button></div>
+
+            </div>
+          </article>
+
+          <article class="menu-card" data-category="minuman">
+            <div class="menu-image menu-poster"><img src="kopi-panas.png" alt="Aneka minuman kopi dan kopi susu" loading="lazy" /></div>
+            <div class="menu-content">
+              <span class="menu-category">Minuman</span>
+              <h3>Kopi Panas</h3>
+              <p>Kopi ringan untuk menemani siang sampai sore.</p>
+               <div class="menu-bottom"><strong class="price">Rp5.000</strong><button class="add-button" type="button" data-name="Kopi Panas" data-price="5000">+ Tambah</button></div>
+               </div>
+          </article>
+
+                <article class="menu-card" data-category="minuman">
+            <div class="menu-image menu-poster"><img src="kopi-dingin.png" alt="Aneka minuman kopi dan kopi susu" loading="lazy" /></div>
+            <div class="menu-content">
+              <span class="menu-category">Minuman</span>
+              <h3>Kopi Dingin</h3>
+              <p>Kopi ringan untuk menemani siang sampai sore.</p>
+               <div class="menu-bottom"><strong class="price">Rp8.000</strong><button class="add-button" type="button" data-name="Kopi Dingin" data-price="8000">+ Tambah</button></div>
+            </div>
+          </article>
+
+          <article class="menu-card" data-category="minuman">
+            <div class="menu-image menu-poster"><img src="menu-es-teh.webp" alt="Es teh dingin" loading="lazy" /></div>
+            <div class="menu-content">
+              <span class="menu-category">Minuman</span>
+              <h3>Es Teh</h3>
+              <p>Teh manis dingin yang simpel dan menyegarkan.</p>
+              <div class="menu-bottom"><strong class="price">Rp3.000</strong><button class="add-button" type="button" data-name="Es Teh" data-price="3000">+ Tambah</button></div>
+            </div>
+          </article>
+
+          <article class="menu-card" data-category="minuman">
+            <div class="menu-image menu-poster"><img src="menu-es-jeruk.webp" alt="Es jeruk segar" loading="lazy" /></div>
+            <div class="menu-content">
+              <span class="menu-category">Minuman</span>
+              <h3>Es Jeruk / Jeruk Panas</h3>
+              <p>Pilih dingin atau hangat sesuai selera.</p>
+              <div class="menu-bottom"><strong class="price">Rp7.000</strong><button class="add-button" type="button" data-name="Es Jeruk / Jeruk Panas" data-price="7000">+ Tambah</button></div>
+            </div>
+          </article>
+
+          <article class="menu-card" data-category="minuman">
+            <div class="menu-image menu-poster"><img src="menu-pop-ice.webp" alt="Pop Ice aneka varian" loading="lazy" /></div>
+            <div class="menu-content">
+              <span class="menu-category">Minuman</span>
+              <h3>Pop Ice Milky</h3>
+              <p>Minuman creamy dengan pilihan rasa yang bisa dikonfirmasi lewat WA.</p>
+              <div class="menu-bottom"><strong class="price">Rp5.000</strong><button class="add-button" type="button" data-name="Pop Ice Milky" data-price="5000">+ Tambah</button></div>
+            </div>
+          </article>
+        </div>
+
+       
+      </div>
+    </section>
+
+  <section class="section process-section">
+  <div class="container process-grid-single"> <!-- Class diubah untuk layout baru -->
+    <div class="process-copy">
+      <p class="eyebrow red">HIGHLIGHT PRODUK</p>
+      <h2>5 Ribu Aja? Serius! Lumpia Beef Gurih, Creamy, & Bikin Nagih. Pas Banget Buat Makan Santai!</h2>
+      <p>Nikmati perpaduan daging sapi pilihan dengan sayuran segar dan saus creamy lumer yang dibalut kulit lumpia renyah. Camilan mewah harga merakyat, dibuat fresh setiap hari!</p>
+      <br>
+      <a class="button button-primary" href="#menu">Pesan Lumpia Sekarang</a>
+    </div>
+      
+    <div class="process-image-single">
+      <!-- Menggunakan satu gambar utama saja di sebelah kanan -->
+      <img src="ingredient.png" alt="Lumpia Beef Kedai Pojok Mba Lutfi" class="main-highlight-img" />
+    </div>
+  </div>
+</section>
+
+    <section class="section order-section" id="cara-pesan">
+      <div class="container">
+        <div class="section-heading centered">
+          <p class="eyebrow blue">CARA PESAN</p>
+          <h2>Tiga langkah, pesanan langsung masuk WhatsApp</h2>
+          <p>Tidak perlu membuat akun atau mengunduh aplikasi tambahan.</p>
+        </div>
+        <div class="steps-grid">
+          <article class="step-card"><span class="step-number">01</span><div class="step-icon">🍜</div><h3>Pilih menu</h3><p>Klik tombol <strong>Tambah</strong> pada makanan atau minuman yang kamu mau.</p></article>
+          <article class="step-card"><span class="step-number">02</span><div class="step-icon">📝</div><h3>Lengkapi pesanan</h3><p>Atur jumlah, isi nama, alamat, dan catatan tambahan bila ada.</p></article>
+          <article class="step-card"><span class="step-number">03</span><div class="step-icon">💬</div><h3>Kirim ke WhatsApp</h3><p>Konfirmasi stok, total harga, dan ongkir bersama admin melalui chat.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section info-section" id="info">
+      <div class="container info-grid">
+        <div class="info-panel blue-panel">
+          <p class="eyebrow white">INFO KEDAI</p>
+          <h2>Simpan informasinya, jangan sampai kehabisan.</h2>
+          <div class="info-list">
+            <div><span>⏰</span><p><small>Jam buka</small><strong>11.00 WIB - sampai habis</strong></p></div>
+            <div><span>🛵</span><p><small>Ongkir</small><strong>Mulai Rp3.000*</strong></p></div>
+            <div><span>📍</span><p><small>Area kirim</small><strong>Konfirmasi via WhatsApp</strong></p></div>
+          </div>
+          <small class="muted-white">*Biaya kirim mengikuti jarak dan area pengantaran.</small>
+        </div>
+
+        <div class="info-panel contact-panel">
+          <span class="contact-bubble">Admin siap menerima pesanan</span>
+          <h3>Pesan ke nomor yang tersedia</h3>
+          <p>Gunakan nomor utama untuk pemesanan. Nomor kedua dapat ditampilkan sebagai alternatif.</p>
+          <a class="contact-row" href="https://wa.me/6282325779806?text=Halo%20Mba%20Nita%2C%20saya%20mau%20pesan." target="_blank" rel="noopener">
+            <span class="contact-avatar">L</span><span><small>WhatsApp utama</small><strong>0823-2577-9806 — Mba Nita</strong></span><b>→</b>
+          </a>
+          <a class="contact-row" href="https://wa.me/6282325779806?text=Halo%20Mba%20Nita%2C%20saya%20mau%20pesan." target="_blank" rel="noopener">
+            <span class="contact-avatar alt">N</span><span><small>WhatsApp alternatif</small><strong>0881-6575-185 — KEDAI POJOK MBA LUTFI</strong></span><b>→</b>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="final-cta">
+      <div class="container final-cta-inner">
+        <div>
+          <p class="eyebrow white">SUDAH TAHU MAU PESAN APA?</p>
+          <h2>Buka chat, kirim pesanan, dan tunggu makanan favoritmu datang.</h2>
+        </div>
+        <button class="button button-yellow open-cart" type="button">Lihat Pesanan <span class="cart-count-inline">0</span></button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <a class="brand brand-logo footer-brand" href="#top" aria-label="Kedai Pojok Mba Lutfi">
+        <img src="logo-kedai-pojok.png" alt="Logo Kedai Pojok Mba Lutfi" />
+      </a>
+      <p>Copyright © 2026 Kedai Pojok Mba Lutfi. All Rights Reserved.</p>
+      
+    </div>
+  </footer>
+
+  <button class="floating-cart open-cart" type="button" aria-label="Buka daftar pesanan">
+    <span class="floating-cart-icon">🛍</span>
+    <span><small>Pesanan</small><strong><span class="cart-count">0</span> item</strong></span>
+  </button>
+
+  <a class="floating-wa-widget" href="https://wa.me/6282325779806?text=Halo%20Mba%20Nita%2C%20saya%20mau%20pesan." target="_blank">
+  <span class="wa-circle">☎</span>
+  <div class="wa-text">
+    <small>Butuh bantuan?</small>
+    <strong>Chat WhatsApp</strong>
+  </div>
+</a>
+ 
+  <div class="drawer-backdrop" hidden></div>
+  <aside class="cart-drawer" aria-hidden="true" aria-label="Daftar pesanan">
+    <div class="drawer-header">
+      <div><small>PESANAN SAYA</small><h2>Siap dikirim ke WhatsApp</h2></div>
+      <button class="drawer-close" type="button" aria-label="Tutup daftar pesanan">×</button>
+    </div>
+    <div class="drawer-body">
+      <div class="empty-cart">
+        <div>🛍</div><h3>Belum ada menu dipilih</h3><p>Tambahkan makanan atau minuman dari daftar menu.</p>
+      </div>
+      <div class="cart-items" aria-live="polite"></div>
+
+      <div class="order-form">
+        <label>Nama pemesan<input id="customerName" type="text" placeholder="Contoh: Rina" /></label>
+        <label>Alamat / patokan<textarea id="customerAddress" rows="3" placeholder="Tulis alamat dan patokan pengantaran"></textarea></label>
+        <label>Catatan tambahan<textarea id="customerNote" rows="2" placeholder="Contoh: es sedikit, sambal dipisah"></textarea></label>
+      </div>
+    </div>
+    <div class="drawer-footer">
+      <div class="subtotal-breakdown" aria-live="polite">
+        <div class="subtotal-row subtotal-row-detail"><span>Subtotal makanan terdata</span><strong id="foodSubtotal">Rp0</strong></div>
+        <div class="subtotal-row subtotal-row-detail"><span>Subtotal minuman terdata</span><strong id="drinkSubtotal">Rp0</strong></div>
+        <div class="subtotal-row subtotal-row-total"><span>Subtotal menu terdata</span><strong id="subtotal">Rp0</strong></div>
+      </div>
+      <p id="subtotalNote">Subtotal otomatis mengikuti jenis menu dan jumlah yang dipilih. Ongkir dikonfirmasi melalui WhatsApp.</p>
+      <button class="button button-wa send-order" type="button">Kirim Pesanan ke WhatsApp</button>
+    </div>
+  </aside>
+
+  <div class="toast" role="status" aria-live="polite">Menu ditambahkan ke pesanan</div>
+<!-- Back To Top Button -->
+<button id="backToTop" class="back-to-top">
+↑
+</button>
+  <script src="script.js"></script>
