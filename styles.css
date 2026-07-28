@@ -643,30 +643,3 @@ height:40px;
 }
 
 }
-/* --- FOOTER BARU --- */
-.main-footer {
-  background-color: #0b2b45; /* Warna biru gelap tema Kedai Pojok */
-  color: #ffffff;            /* Warna teks putih */
-  padding: 30px 0;           /* Jarak atas dan bawah */
-  text-align: center;        /* Membuat teks ke tengah */
-  width: 100%;
-  border-top: 3px solid #169fee; /* Garis biru cerah di atas footer */
-  margin-top: 50px;          /* Jarak footer dengan konten di atasnya */
-}
-
-.main-footer p {
-  margin: 0;
-  font-size: 14px;
-  opacity: 0.9;
-  letter-spacing: 1px;
-}
-
-/* Responsif untuk HP */
-@media (max-width: 768px) {
-  .main-footer {
-    padding: 20px 0;
-  }
-  .main-footer p {
-    font-size: 12px;
-  }
-}
