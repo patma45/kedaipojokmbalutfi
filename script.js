@@ -382,16 +382,3 @@ backToTop.addEventListener("click", function(){
 });
 
 }
-
-<script>
-  const levelSelect = document.getElementById('mie-level');
-  const addButton = document.getElementById('add-mie-ganazzz');
-
-  if (levelSelect && addButton) {
-    levelSelect.addEventListener('change', function() {
-      const selectedLevel = this.value;
-      // Mengubah attribute data-name agar sistem keranjang mencatat levelnya
-      addButton.setAttribute('data-name', `Mie Ganazzz (Lvl ${selectedLevel})`);
-    });
-  }
-</script>
