@@ -490,7 +490,20 @@ button { color: inherit; }
   visibility:visible;
 
 }
+/* LOCK DESKTOP VIEW */
+@media (min-width:981px){
 
+html,
+body{
+    width:100%;
+    overflow-x:hidden;
+}
+
+.container{
+    width:min(calc(100% - 80px), 1180px);
+}
+
+}
 
 /* =========================
    WHATSAPP FLOATING WIDGET
@@ -624,6 +637,5 @@ width:40px;
 height:40px;
 
 }
-
 
 }
