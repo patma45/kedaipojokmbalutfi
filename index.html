@@ -133,7 +133,8 @@ if (window.innerWidth > 980) {
           </div>
         </div>
 
-       <article class="menu-card featured" data-category="makanan">
+<!-- GANTI SELURUH BAGIAN MIE GANAZZZ DENGAN KODE DI BAWAH INI -->
+<article class="menu-card featured" data-category="makanan">
   <div class="menu-image menu-poster">
     <img src="mie-ganaz.png" alt="Mie Ganazzz" loading="lazy" />
     <span class="menu-badge red">Paling dicari</span>
@@ -143,10 +144,10 @@ if (window.innerWidth > 980) {
     <h3>Mie Ganazzz</h3>
     <p>Mie goreng pedas gurih dengan topping ayam cincang, smoked beef, dan pangsit renyah. Perpaduan sempurna antara rasa pedas nampol dan tekstur yang garing.</p>
     
-    <!-- TAMBAHKAN KODE INI -->
-    <div class="level-container" style="margin-bottom: 10px;">
-      <label for="mie-level" style="font-size: 0.8rem; display: block; margin-bottom: 4px; color: #666;">Pilih Level Pedas:</label>
-      <select id="mie-level" class="level-select" style="width: 100%; padding: 8px; border-radius: 8px; border: 1px solid #ddd; font-family: inherit;">
+    <!-- Bagian Level Pedas -->
+    <div style="margin-top: 15px; margin-bottom: 10px;">
+      <label style="font-size: 13px; color: #666; display: block; margin-bottom: 5px;">Pilih Level Pedas:</label>
+      <select id="mie-level" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd; background: #fff; cursor: pointer;">
         <option value="1">Level 1 (Original)</option>
         <option value="2">Level 2 (Sedang)</option>
         <option value="3">Level 3 (Pedas)</option>
@@ -154,16 +155,13 @@ if (window.innerWidth > 980) {
         <option value="5">Level 5 (Ganazzz!)</option>
       </select>
     </div>
-    <!-- SELESAI TAMBAHAN -->
 
     <div class="menu-bottom">
       <strong class="price">Rp15.000</strong>
-      <!-- Perhatikan id="add-mie-ganazzz" yang kita tambahkan di bawah -->
       <button class="add-button" id="add-mie-ganazzz" type="button" data-name="Mie Ganazzz (Lvl 1)" data-price="15000">+ Tambah</button>
     </div>
-  </div>
-</article>
-
+  </div> <!-- PENUTUP menu-content (PENTING!) -->
+</article> <!-- PENUTUP menu-card (PENTING!) -->
           <article class="menu-card" data-category="makanan">
             <div class="menu-image menu-poster"><img src="menu-bakso-tetelan.webp" alt="Bakso sapi asli tetelan" loading="lazy" /></div>
             <div class="menu-content">
