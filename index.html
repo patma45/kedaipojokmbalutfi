@@ -4,30 +4,26 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   <meta name="theme-color" content="#169fee" />
-  <meta name="description" content="Pesan Bakso Tetelan, Lumpia Beef, minuman, dan catering Kedai Pojok Mba Lutfi via WhatsApp. Ongkir mulai Rp3.000-an." />
+  <meta name="description" content="Pesan Bakso Tetelan, Lumpia Beef, minuman, dan catering Kedai Pojok Mba Lutfi via WhatsApp." />
   <title>Kedai Pojok Mba Lutfi — Pesan via WhatsApp</title>
   <link rel="icon" href="assets/favicon.png" />
   <link rel="stylesheet" href="styles.css" />
   <style>
-    /* CSS Tambahan untuk memastikan Tombol Back to Top tampil di depan */
-    #backToTop { z-index: 9999 !important; }
-    /* Styling dropdown agar rapi */
-    .level-select {
-        width: 100%; 
-        padding: 8px; 
-        border-radius: 8px; 
-        border: 1px solid #ddd; 
-        margin-bottom: 10px; 
-        font-family: inherit;
-        background: white;
+    /* Agar Tombol Back to Top & WA selalu di depan */
+    #backToTop, .floating-wa-widget, .floating-cart { z-index: 9999 !important; }
+    /* Style untuk pilihan level pedas */
+    .level-wrapper { margin: 10px 0; text-align: left; }
+    .level-select { 
+        width: 100%; padding: 8px; border-radius: 8px; border: 1px solid #ddd; 
+        font-family: inherit; background: #fff; cursor: pointer;
     }
   </style>
 </head>
 <body>
   <header class="site-header" id="top">
     <div class="container nav-wrap">
-      <a class="brand brand-logo" href="#top" aria-label="Kedai Pojok Mba Lutfi">
-        <img src="logo-kedai-pojok.png" alt="Logo Kedai Pojok Mba Lutfi" />
+      <a class="brand brand-logo" href="#top">
+        <img src="logo-kedai-pojok.png" alt="Logo Kedai Pojok" />
       </a>
       <button class="nav-toggle" type="button" aria-label="Buka menu navigasi">
         <span></span><span></span><span></span>
@@ -39,27 +35,23 @@
       </nav>
     </div>
   </header>
-  
+
   <main>
     <section class="hero">
-      <div class="hero-dots hero-dots-a"></div>
-      <div class="hero-dots hero-dots-b"></div>
       <div class="container hero-grid">
         <div class="hero-copy">
-          <div class="status-badge"><span class="status-dot"></span> Buka 11.00 WIB - sampai habis</div>
+          <div class="status-badge"><span class="status-dot"></span> Buka 11.00 WIB - Habis</div>
           <p class="eyebrow">PESAN MUDAH • LANGSUNG WHATSAPP</p>
-          <h1 class="hero-title-long">Jajan Enak Gak Pake Mahal, <span>Ongkir Cuma Seharga Parkir!</span></h1>
+          <h1 class="hero-title-long">Jajan Enak Gak Pake Mahal, <span>Ongkir Seharga Parkir!</span></h1>
           <p class="hero-lead">Mau Bakso Tetelan atau Mie Ganazzz? Tinggal klik WhatsApp, pesanan meluncur!</p>
           <div class="hero-actions">
             <a class="button button-primary" href="#menu">Lihat Menu</a>
             <a class="button button-light" href="https://wa.me/6282325779806" target="_blank">Chat Admin</a>
           </div>
         </div>
-
         <div class="hero-visual">
           <div class="hero-photo-card">
-            <img src="menu-header.webp" alt="Menu Header" />
-            <span class="hero-tag">Mie Ganazzz</span>
+            <img src="menu-header.webp" alt="Header" />
           </div>
         </div>
       </div>
@@ -68,8 +60,8 @@
     <section class="ticker">
       <div class="ticker-track">
         <span>ONGKIR MULAI RP3.000</span><i>★</i>
-        <span>BUKA 11.00 WIB</span><i>★</i>
-        <span>PESAN VIA WHATSAPP</span><i>★</i>
+        <span>BUKA 11.00 WIB — SAMPAI HABIS</span><i>★</i>
+        <span>PESAN LANGSUNG VIA WHATSAPP</span><i>★</i>
       </div>
     </section>
 
@@ -88,10 +80,10 @@
         </div>
 
         <div class="menu-grid">
-          <!-- MIE GANAZZZ (Sudah diperbaiki ukurannya & Levelnya) -->
+          <!-- MIE GANAZZZ (Class 'featured' dihapus agar ukuran normal) -->
           <article class="menu-card" data-category="makanan">
             <div class="menu-image menu-poster">
-              <img src="mie-ganaz.png" alt="Mie Ganazzz" />
+              <img src="mie-ganaz.png" alt="Mie Ganazzz" loading="lazy" />
               <span class="menu-badge red">Paling dicari</span>
             </div>
             <div class="menu-content">
@@ -99,14 +91,16 @@
               <h3>Mie Ganazzz</h3>
               <p>Mie goreng pedas gurih dengan topping ayam cincang, smoked beef, dan pangsit renyah.</p>
               
-              <label style="font-size: 0.75rem; color: #666; margin-bottom: 4px; display: block;">Pilih Level:</label>
-              <select id="mie-level" class="level-select">
-                <option value="1">Level 1 (Original)</option>
-                <option value="2">Level 2 (Sedang)</option>
-                <option value="3">Level 3 (Pedas)</option>
-                <option value="4">Level 4 (Extra Pedas)</option>
-                <option value="5">Level 5 (Ganazzz!)</option>
-              </select>
+              <div class="level-wrapper">
+                <label style="font-size: 12px; color: #666; display: block; margin-bottom: 4px;">Pilih Level Pedas:</label>
+                <select id="mie-level" class="level-select">
+                  <option value="1">Level 1 (Original)</option>
+                  <option value="2">Level 2 (Sedang)</option>
+                  <option value="3">Level 3 (Pedas)</option>
+                  <option value="4">Level 4 (Extra Pedas)</option>
+                  <option value="5">Level 5 (Ganazzz!)</option>
+                </select>
+              </div>
 
               <div class="menu-bottom">
                 <strong class="price">Rp15.000</strong>
@@ -120,119 +114,75 @@
             <div class="menu-image menu-poster"><img src="menu-bakso-tetelan.webp" alt="Bakso" /></div>
             <div class="menu-content">
               <span class="menu-category">Makanan</span>
-              <h3>Bakso Sapi Asli Tetelan</h3>
-              <p>Bakso sapi dengan tetelan dan kuah hangat yang gurih.</p>
+              <h3>Bakso Sapi Tetelan</h3>
+              <p>Bakso sapi dengan tetelan dan kuah hangat gurih.</p>
               <div class="menu-bottom"><strong class="price">Rp12.000</strong><button class="add-button" type="button" data-name="Bakso Sapi Asli Tetelan" data-price="12000">+ Tambah</button></div>
             </div>
           </article>
 
           <article class="menu-card" data-category="makanan">
-            <div class="menu-image menu-poster"><img src="lumpiabeef.png" alt="Lumpia Beef" /></div>
+            <div class="menu-image menu-poster"><img src="lumpiabeef.png" alt="Lumpia" /></div>
             <div class="menu-content">
               <span class="menu-category">Makanan</span>
               <h3>Lumpia Beef</h3>
-              <p>Isian daging asli, saus lumer. Pesan sekarang besti!</p>
+              <p>Daging asli, saus lumer. Pesan sebelum kehabisan!</p>
               <div class="menu-bottom"><strong class="price">Rp5.000</strong><button class="add-button" type="button" data-name="Lumpia Beef" data-price="5000">+ Tambah</button></div>
             </div>
           </article>
-
-          <!-- MENU MINUMAN (Sesuai kode asli Anda) -->
-          <article class="menu-card" data-category="minuman">
-            <div class="menu-image menu-poster"><img src="menu-es-teh.webp" alt="Es Teh" /></div>
-            <div class="menu-content">
-              <span class="menu-category">Minuman</span>
-              <h3>Es Teh</h3>
-              <p>Teh manis dingin menyegarkan.</p>
-              <div class="menu-bottom"><strong class="price">Rp3.000</strong><button class="add-button" type="button" data-name="Es Teh" data-price="3000">+ Tambah</button></div>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- HIGHLIGHT SECTION -->
-    <section class="section process-section">
-      <div class="container process-grid-single">
-        <div class="process-copy">
-          <p class="eyebrow red">HIGHLIGHT PRODUK</p>
-          <h2>Lumpia Beef Gurih Cuma 5 Ribu!</h2>
-          <p>Nikmati perpaduan daging sapi pilihan dengan saus creamy lumer.</p>
-          <a class="button button-primary" href="#menu">Pesan Sekarang</a>
-        </div>
-        <div class="process-image-single">
-          <img src="ingredient.png" alt="Lumpia Beef" class="main-highlight-img" />
-        </div>
-      </div>
-    </section>
-
-    <!-- INFO & KONTAK -->
-    <section class="section info-section" id="info">
-      <div class="container info-grid">
-        <div class="info-panel blue-panel">
-          <p class="eyebrow white">INFO KEDAI</p>
-          <h2>Jangan sampai kehabisan.</h2>
-          <div class="info-list">
-            <div><span>⏰</span><p><small>Jam buka</small><strong>11.00 WIB - Habis</strong></p></div>
-            <div><span>🛵</span><p><small>Ongkir</small><strong>Mulai Rp3.000</strong></p></div>
-          </div>
-        </div>
-        <div class="info-panel contact-panel">
-          <h3>Chat Admin</h3>
-          <a class="contact-row" href="https://wa.me/6282325779806">
-            <span class="contact-avatar">L</span><span><strong>0823-2577-9806 — Mba Nita</strong></span>
-          </a>
         </div>
       </div>
     </section>
   </main>
 
   <footer class="site-footer">
-    <div class="container">
+    <div class="container footer-grid">
       <p>Copyright © 2026 Kedai Pojok Mba Lutfi.</p>
     </div>
   </footer>
 
-  <!-- FLOAT ELEMENTS -->
+  <!-- FLOAT ELEMENTS (Back to Top, WA, & Cart) -->
+  <button id="backToTop" class="back-to-top">↑</button>
+
   <button class="floating-cart open-cart" type="button">
     <span class="floating-cart-icon">🛍</span>
     <span><small>Pesanan</small><strong><span class="cart-count">0</span> item</strong></span>
   </button>
 
-  <button id="backToTop" class="back-to-top">↑</button>
+  <a class="floating-wa-widget" href="https://wa.me/6282325779806" target="_blank">
+    <span class="wa-circle">☎</span>
+    <div class="wa-text"><small>Butuh bantuan?</small><strong>Chat WhatsApp</strong></div>
+  </a>
 
-  <!-- CART DRAWER -->
+  <!-- DRAWER PESANAN -->
+  <div class="drawer-backdrop" hidden></div>
   <aside class="cart-drawer" aria-hidden="true">
     <div class="drawer-header">
-      <h2>Daftar Pesanan</h2>
-      <button class="drawer-close">×</button>
+      <div><small>PESANAN SAYA</small><h2>Siap dikirim ke WhatsApp</h2></div>
+      <button class="drawer-close" type="button">×</button>
     </div>
     <div class="drawer-body">
       <div class="cart-items"></div>
-      <div class="order-form" style="padding: 15px;">
-        <label>Nama<input id="customerName" type="text" /></label>
-        <label>Alamat<textarea id="customerAddress" rows="2"></textarea></label>
+      <div class="order-form">
+        <label>Nama<input id="customerName" type="text" placeholder="Nama Anda" /></label>
+        <label>Alamat<textarea id="customerAddress" rows="2" placeholder="Alamat Lengkap"></textarea></label>
       </div>
     </div>
     <div class="drawer-footer">
-      <button class="button button-wa send-order">Kirim Pesanan ke WhatsApp</button>
+      <button class="button button-wa send-order" type="button">Kirim Pesanan ke WhatsApp</button>
     </div>
   </aside>
 
-  <div class="drawer-backdrop" hidden></div>
   <div class="toast">Menu ditambahkan!</div>
 
   <script src="script.js"></script>
   <script>
-    // JAVASCRIPT UNTUK LEVEL PEDAS MIE GANAZZZ
+    // Memastikan fitur level pedas merubah data-name tombol
     document.addEventListener('DOMContentLoaded', function() {
         const levelSelect = document.getElementById('mie-level');
         const addButton = document.getElementById('add-mie-ganazzz');
-
         if (levelSelect && addButton) {
             levelSelect.addEventListener('change', function() {
-                // Mengubah data-name supaya levelnya ikut terkirim ke WA
-                const selectedLevel = this.value;
-                addButton.setAttribute('data-name', 'Mie Ganazzz (Lvl ' + selectedLevel + ')');
+                addButton.setAttribute('data-name', 'Mie Ganazzz (Lvl ' + this.value + ')');
             });
         }
     });
